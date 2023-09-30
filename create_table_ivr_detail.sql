@@ -22,19 +22,33 @@ SELECT
   m.module_sequece AS module_sequence,
   m.module_name,
   m.module_duration,
-  m.module_result,
+  CASE
+    WHEN m.module_result = 'ERROR' THEN 'Error'
+    WHEN m.module_result = 'UNKNOWN' THEN 'Desconocido'
+    WHEN m.module_result = 'ABSORPTION' THEN 'Absorción'
+    WHEN m.module_result = 'OK' THEN 'Éxito'
+    WHEN m.module_result = 'AGENT' THEN 'Agente'
+    ELSE m.module_result
+  END AS module_result,
   s.step_sequence,
   s.step_name,
   s.step_result,
-  s.step_description_error,
-  COALESCE(NULLIF(s.document_type, 'NULL'), 'DESCONOCIDO') AS document_type,
   CASE
-    WHEN s.document_identification = 'NULL' THEN 'DESCONOCIDO'
+    WHEN s.step_description_error = 'UNKNOWN ERROR' THEN 'Error desconocido'
+    ELSE s.step_description_error
+  END AS step_description_error,
+  COALESCE(NULLIF(s.document_type, 'NULL'), 'Desconocido') AS document_type,
+  CASE
+    WHEN s.document_identification = 'NULL' THEN 'Desconocido'
     ELSE REGEXP_REPLACE(s.document_identification, '==$', '')
   END AS document_identification,
-  COALESCE(NULLIF(s.customer_phone, 'NULL'), 'DESCONOCIDO') AS customer_phone,
-  COALESCE(NULLIF(s.billing_account_id, 'NULL'), 'DESCONOCIDO') AS billing_account_id
-
+  COALESCE(
+    NULLIF(REGEXP_REPLACE(s.customer_phone, '==$', ''), 'NULL'),
+    'Desconocido'
+  ) AS customer_phone,
+  COALESCE(
+    NULLIF(s.billing_account_id, 'NULL'), 'Desconocido'
+  ) AS billing_account_id
 FROM
   `practica-keepcoding-400117.keepcoding.ivr_calls` AS c
 LEFT JOIN
