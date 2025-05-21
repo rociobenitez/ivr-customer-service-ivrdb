@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `practica-keepcoding-400117.keepcoding.ivr_detail` AS
+CREATE OR REPLACE TABLE `ivr_data.ivr.ivr_detail` AS
 SELECT
   c.ivr_id AS calls_ivr_id,
   REGEXP_REPLACE(c.phone_number, '==$', '') AS calls_phone_number,
@@ -50,12 +50,12 @@ SELECT
     NULLIF(s.billing_account_id, 'NULL'), 'Desconocido'
   ) AS billing_account_id
 FROM
-  `practica-keepcoding-400117.keepcoding.ivr_calls` AS c
+  `ivr_data.ivr.ivr_calls` AS c
 LEFT JOIN
-  `practica-keepcoding-400117.keepcoding.ivr_modules` AS m
+  `ivr_data.ivr.ivr_modules` AS m
 ON
   c.ivr_id = m.ivr_id
 LEFT JOIN
-  `practica-keepcoding-400117.keepcoding.ivr_steps` AS s
+  `ivr_data.ivr.ivr_steps` AS s
 ON
   m.ivr_id = s.ivr_id AND m.module_sequece = s.module_sequece;

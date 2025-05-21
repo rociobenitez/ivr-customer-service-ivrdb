@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `practica-keepcoding-400117.keepcoding.ivr_summary` AS
+CREATE OR REPLACE TABLE `ivr_data.ivr.ivr_summary` AS
 SELECT 
   d.calls_ivr_id AS ivr_id,
   d.calls_phone_number AS phone_number,
@@ -53,8 +53,8 @@ FROM (
         ORDER BY calls_start_date) AS prev_call_date,
     LEAD(calls_start_date) OVER (PARTITION BY calls_phone_number
         ORDER BY calls_start_date) AS next_call_date
-    FROM `practica-keepcoding-400117.keepcoding.ivr_detail`
+    FROM `ivr_data.ivr.ivr_detail`
 ) AS CallsWithTimestamp
-JOIN `practica-keepcoding-400117.keepcoding.ivr_detail` AS d
+JOIN `ivr_data.ivr.ivr_detail` AS d
 ON CallsWithTimestamp.calls_ivr_id = d.calls_ivr_id
 GROUP BY ivr_id, phone_number;

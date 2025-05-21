@@ -1,5 +1,5 @@
 -- Create the integer cleaning function in which if a null enters, the function returns the value -999999
-CREATE OR REPLACE FUNCTION `practica-keepcoding-400117.keepcoding.clean_integer`(input_integer INT64) AS (
+CREATE OR REPLACE FUNCTION `ivr_data.ivr.clean_integer`(input_integer INT64) AS (
   IF(input_integer IS NULL, -999999, input_integer)
 );
 
@@ -13,5 +13,5 @@ WITH test_values AS (
 -- Apply the function to the test values
 SELECT
   input_value,
-  `practica-keepcoding-400117.keepcoding.clean_integer`(input_value) AS cleaned_value
+  `ivr_data.ivr.clean_integer`(input_value) AS cleaned_value
 FROM test_values;
